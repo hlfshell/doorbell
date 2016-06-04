@@ -1,0 +1,16 @@
+{
+  "name": "doorbell",
+  "version": "1.0.0",
+  "description": "A raspberry pi / nodejs powered photo/video doorbell",
+  "main": "daemon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "doorbell",
+    "rasperry",
+    "pi"
+  ],
+  "author": "Keith Chester",
+  "license": "MIT"
+}
