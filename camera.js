@@ -61,8 +61,12 @@ class Camera{
         
         flow(
             [
-               self._waitForCamera,
-               self._snapPicture3
+               function(done){
+                   self._waitForCamera(done);
+               },
+               function(done){
+                   self._snapPicture(done);   
+               }
             ],
             cb
         );
