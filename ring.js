@@ -1,3 +1,5 @@
+"use strict"
+
 var flow = require('async').waterfall;
 var each = require('async').each;
 var twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);

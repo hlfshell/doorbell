@@ -1,5 +1,6 @@
-var GPIO = require('onoff').Gpio;
 "use strict"
+
+var GPIO = require('onoff').Gpio;
 
 var Ring = require('./ring.js');
 
