@@ -1,13 +1,6 @@
 var PiCamera = require('camerapi');
 var path = require('path');
 var flow = require('async').waterfall;
-var aws = require('aws-sdk');
-
-aws.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-});
-var s3 = new aws.S3();
 
 class Camera{
     
