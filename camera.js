@@ -22,6 +22,7 @@ class Camera{
         if(process.env.VERTICALLY_FLIP_PICTURE) cameraOptions.vflip = " ";
         
         this._piCam.prepare(cameraOptions);
+        this._piCam.baseFolder(process.env.PHOTOS_FOLDER);
     }
     
     get piCam(){
