@@ -2,6 +2,7 @@
 var fs = require('fs');
 if(fs.existsSync('./.env')) require('dotenv').config();
 
+var path = require('path');
 var express = require('express');
 var app = express();
 
