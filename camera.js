@@ -1,3 +1,5 @@
+"use strict"
+
 var PiCamera = require('camerapi');
 var path = require('path');
 var flow = require('async').waterfall;
