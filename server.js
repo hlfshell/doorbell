@@ -34,3 +34,16 @@ app.get(
 app.get('/:image', function(req, res){
     res.sendFile(path.join(process.env.PHOTOS_FOLDER, req.params.image));
 });
+
+//Load the daemon
+var Daemon = require('./daemon.js');
+var Camera = require('./camera.js');
+
+var camera = new Camera();
+
+var daemon = new Daemon({ camera: camera });
+
+daemon.watch();
+
+
+app.listen(80);
