@@ -79,8 +79,12 @@ class Ring {
         //Take a picture
         flow(
             [
-                self.camera.takePicture,
-                self._sendTexts
+                function(done){
+                    self.camera.takePicture(done);
+                },
+                function(done){
+                    self._sendTexts(done);
+                }
             ],
             cb
         )
