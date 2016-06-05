@@ -46,4 +46,4 @@ var daemon = new Daemon({ camera: camera });
 daemon.watch();
 
 
-app.listen(80);
+app.listen(process.env.PORT);
