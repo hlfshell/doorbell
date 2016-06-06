@@ -11,6 +11,7 @@ class Ring {
     
     constructor(opts){
         this._camera = opts.camera;
+        this._lastPressed = 0;
     }
     
     get camera(){
