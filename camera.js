@@ -52,9 +52,8 @@ class Camera{
         var self = this;
         var now = new Date();
         var filename = now.getTime() + '.jpg';
-        var filePath = path.join(process.env.PHOTOS_FOLDER, filename);
         
-        self.piCam.takePicture(filePath, function(file, err){
+        self.piCam.takePicture(filename, function(file, err){
            cb(err, filename); 
         });
     }

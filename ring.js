@@ -35,7 +35,7 @@ class Ring {
     
     _createNonce(cb){
         var nonce = uuid();
-        fs.open(path.join(process.env.NONCE_FOLDER, uuid()), function(err, fd){
+        fs.open(path.join(process.env.NONCE_FOLDER, uuid()), 'w', function(err, fd){
             if(err) return cb(err);
             fs.close(fd, function(err){
                 cb(err, nonce);
