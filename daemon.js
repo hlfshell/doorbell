@@ -53,6 +53,10 @@ class Daemon{
         }, delay);
     }
     
+    manuallyTrigger(){
+        self.ring.trigger();
+    }
+    
     watch(){
         var self = this;
         self._button.watch(function(err, value){

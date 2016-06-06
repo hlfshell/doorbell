@@ -2,13 +2,23 @@
 var fs = require('fs');
 if(fs.existsSync('./.env')) require('dotenv').config();
 
+//Load the daemon
+var Daemon = require('./daemon.js');
+var Camera = require('./camera.js');
+
+var camera = new Camera();
+
+var daemon = new Daemon({ camera: camera });
+
+//Now prepare the web server
+
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 app.use(bodyParser.json());
 
-var contacts = require('./contact.json');
+var contacts = require('./contacts.json');
 
 //For serving up the image for the MMS portion
 app.get(
@@ -37,22 +47,50 @@ app.get(
 );
 
 //Accepting an SMS from twilio 
+/*
+Example SMS:
+{ ToCountry: 'US',
+  ToState: 'PA',
+  SmsMessageSid: 'somevalue',
+  NumMedia: '0',
+  ToCity: 'TYRONE',
+  FromZip: '07930',
+  SmsSid: 'somevalue',
+  FromState: 'NJ',
+  SmsStatus: 'received',
+  FromCity: 'CHESTER',
+  Body: 'Hey yo door bell how you ringin?',
+  FromCountry: 'US',
+  To: '+7325555555',
+  ToZip: '16877',
+  NumSegments: '1',
+  MessageSid: 'somevalue',
+  AccountSid: 'somevalue',
+  From: '+19085555555',
+  ApiVersion: '2010-04-01' }
+
+
+*/
 app.get(
-    "/sms/received"
+    "/sms/received",
     function(req, res, next){
-        //Is this actually from twilio?
+        var isAContact = false;
+        contacts.forEach(function(contact){
+            isAContact = isAContact || req.body.from.indexOf(from.contact.phone) != -1;
+        });
         
+        if(isAContact) return next();
+        res.status(401).send();
+    },
+    //If we reach this point, trigger the ring
+    function(req, res, next){
+        daemon.trigger();
     }
 );
 
-//Load the daemon
-var Daemon = require('./daemon.js');
-var Camera = require('./camera.js');
-
-var camera = new Camera();
-
-var daemon = new Daemon({ camera: camera });
-
+//Start the daemon
 daemon.watch();
 
+//Listen for web requests
 app.listen(process.env.PORT);
+console.log("Server is now listening for requests");
