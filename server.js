@@ -84,7 +84,7 @@ app.get(
     },
     //If we reach this point, trigger the ring
     function(req, res, next){
-        daemon.trigger();
+        daemon.ring.trigger(req.body.from);
     }
 );
 

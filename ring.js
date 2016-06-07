@@ -44,34 +44,46 @@ class Ring {
         });
     }
     
-    _sendTexts(imageName, cb){
+    _sendMMS(phone, cb){
+        twilio.sendMessage(
+            {
+                to: phone,
+                from: process.env.TWILIO_PHONE_NUMBER,
+                mediaUrl: process.env.MY_URL + '/mms/' + nonce + '/' + imageName 
+            },
+            cb
+        );
+    }
+    
+    _sendTexts(imageName, phone, cb){
         var self = this;
+        
+        if(typeof phone == "function"){
+            phone = null;
+            cb = phone;
+        }
+        
         self._createNonce(function(err, nonce){
            if(err) return cb(err);
            
-           each(
-                contacts,
-                function(contact, done){
-                    twilio.sendMessage(
-                    {
-                        to: contact.phone,
-                        from: process.env.TWILIO_PHONE_NUMBER,
-                        mediaUrl: process.env.MY_URL + '/mms/' + nonce + '/' + imageName 
-                    },
-                    done
-                    );
-                },
-                cb
-            );
-            
+           if(phone)
+                self._sendMMS(phone, cb);
+           else {
+                var phones = [];
+                contacts.forEeach((contact)=> phones.push(contact.phone) );
+                each(
+                    phones,
+                    self._sendMMS,
+                    cb
+                );
+            }
+                
         });
         
     }
     
-    trigger(cb){
+    trigger(phone){
         var self = this;
-        
-        if(!cb) cb = function(){};
         
         if(!self.canRing) return;
         
@@ -83,11 +95,17 @@ class Ring {
                 function(done){
                     self.camera.takePicture(done);
                 },
-                function(done){
-                    self._sendTexts(done);
+                function(image, done){
+                    if(phone){
+                     self._sendTexts(image, phone, done);
+                    } else {
+                     self._sendTexts(image, done);   
+                    }
                 }
             ],
-            cb
+            function(){
+                //Do nothing
+            }
         )
         
     }
