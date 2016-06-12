@@ -60,6 +60,9 @@ class Daemon{
     watch(){
         var self = this;
         self._button.watch(function(err, value){
+            //We only react to the button press, not the release - avoid double firing
+            if(value == LOW) return;
+            
             //If the ringing occured too soon, don't ring again!
             if(!self.ring.canRing) return
             
