@@ -17,6 +17,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
 var contacts = require('./contacts.json');
 
@@ -42,7 +43,7 @@ app.get(
         });
     },
     function(req, res, next){
-        res.sendFile(path.join(process.env.PHOTOS_FOLDER, req.params.image));
+        res.sendFile(path.join(process.env.PHOTOS_FOLDER, req.params.image), { root: __dirname });
     }
 );
 
