@@ -6,6 +6,7 @@ var twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILI
 var contacts = require('./contacts.json');
 var fs = require('fs');
 var uuid = require('uuid').v4;
+var path = require('path');
 
 class Ring {
     
@@ -36,7 +37,7 @@ class Ring {
     
     _createNonce(cb){
         var nonce = uuid();
-        fs.open(path.join(process.env.NONCE_FOLDER, uuid()), 'w', function(err, fd){
+        fs.open(path.join(process.env.NONCE_FOLDER, nonce), 'w', function(err, fd){
             if(err) return cb(err);
             fs.close(fd, function(err){
                 cb(err, nonce);
