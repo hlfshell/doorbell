@@ -12,9 +12,9 @@ class Camera{
         
         var cameraOptions =
             {
-                timeout: 1000,
-                width: 1280,
-                height: 720,
+                timeout: 750,
+                width: 800,
+                height: 600,
                 quality: 100
             };
             
