@@ -45,15 +45,18 @@ class Ring {
         });
     }
     
-    _sendMMS(phone, cb){
-        twilio.sendMessage(
-            {
-                to: phone,
-                from: process.env.TWILIO_PHONE_NUMBER,
-                mediaUrl: process.env.MY_URL + '/mms/' + nonce + '/' + imageName 
-            },
-            cb
-        );
+    _sendMMS(imageName, phone, cb){
+        var self = this;
+        self._createNonce(function(err, nonce){
+           twilio.sendMessage(
+                {
+                    to: phone,
+                    from: process.env.TWILIO_PHONE_NUMBER,
+                    mediaUrl: process.env.MY_URL + '/mms/' + nonce + '/' + imageName 
+                },
+                cb
+            ); 
+        });
     }
     
     _sendTexts(imageName, phone, cb){
@@ -64,22 +67,19 @@ class Ring {
             cb = phone;
         }
         
-        self._createNonce(function(err, nonce){
-           if(err) return cb(err);
-           
-           if(phone)
-                self._sendMMS(phone, cb);
-           else {
-                var phones = [];
-                contacts.forEach((contact)=> phones.push(contact.phone) );
-                each(
-                    phones,
-                    self._sendMMS,
-                    cb
-                );
-            }
-                
-        });
+        if(phone)
+            self._sendMMS(imageName, phone, cb);
+        else {
+            var phones = [];
+            contacts.forEach((contact)=> phones.push(contact.phone) );
+            each(
+                phones,
+                function(phone, done){
+                    self._sendMMS(imageName, phone, done);
+                },
+                cb
+            );
+        }
         
     }
     
