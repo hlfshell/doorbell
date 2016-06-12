@@ -71,7 +71,7 @@ class Ring {
                 self._sendMMS(phone, cb);
            else {
                 var phones = [];
-                contacts.forEeach((contact)=> phones.push(contact.phone) );
+                contacts.forEach((contact)=> phones.push(contact.phone) );
                 each(
                     phones,
                     self._sendMMS,
