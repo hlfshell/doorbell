@@ -91,6 +91,7 @@ app.get(
 
 //Start the daemon
 daemon.watch();
+console.log("Daemon is now watching for button presses");
 
 //Listen for web requests
 app.listen(process.env.PORT);
