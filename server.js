@@ -72,12 +72,12 @@ Example SMS:
 
 
 */
-app.get(
+app.post(
     "/sms/received",
     function(req, res, next){
         var isAContact = false;
         contacts.forEach(function(contact){
-            isAContact = isAContact || req.body.from.indexOf(from.contact.phone) != -1;
+            isAContact = isAContact || req.body.From.indexOf(contact.phone) != -1;
         });
         
         if(isAContact) return next();
@@ -85,7 +85,7 @@ app.get(
     },
     //If we reach this point, trigger the ring
     function(req, res, next){
-        daemon.ring.trigger(req.body.from);
+        daemon.ring.trigger(req.body.From);
     }
 );
 
